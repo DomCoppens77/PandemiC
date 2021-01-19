@@ -1,0 +1,44 @@
+﻿@model IEnumerable<PandemiC.Web.Client.Models.Country>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<p>
+    <a asp-action="Create">Create New Country</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ISO)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Ctry)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsEU)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ISO)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Ctry)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsEU)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { ISO = item.ISO }) |
+                @Html.ActionLink("Delete", "Delete", new { ISO = item.ISO })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

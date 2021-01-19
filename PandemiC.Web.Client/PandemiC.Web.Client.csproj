@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\PandemiC.Web.Global\PandemiC.Web.Global.csproj" />
+    <ProjectReference Include="..\PandemiC.Web.Repo\PandemiC.Web.Repo.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,5 @@
+﻿CREATE USER [RegUser]
+	FOR LOGIN [RegUser]
+GO
+
+GRANT CONNECT To [RegUser]

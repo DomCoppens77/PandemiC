@@ -1,0 +1,11 @@
+﻿CREATE PROCEDURE [PandUser].[DCOSP_UpdCtry]
+	@ISO NVARCHAR(2),
+	@Ctry NVARCHAR(20),
+	@IsEU BIT
+AS
+BEGIN
+	UPDATE [Country] SET
+	[Ctry] = RTRIM(@Ctry),
+	[IsEU] = @IsEU
+	WHERE [ISO] = UPPER(@ISO);
+END

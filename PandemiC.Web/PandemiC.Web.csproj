@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="DCODatabase.ToolBox" Version="1.0.1" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\PandemiC.Web.Client\PandemiC.Web.Client.csproj" />
+    <ProjectReference Include="..\PandemiC.Web.Global\PandemiC.Web.Global.csproj" />
+    <ProjectReference Include="..\PandemiC.Web.Repo\PandemiC.Web.Repo.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Models\Forms\Country\" />
+  </ItemGroup>
+
+</Project>

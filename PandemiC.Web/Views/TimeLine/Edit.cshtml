@@ -1,0 +1,43 @@
+﻿@model PandemiC.Web.Models.Forms.TimeLine.TimeLineUpdForm
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit Time Line Point</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group">
+                <label asp-for="SelectedResaurant" class="control-label"></label>
+                @Html.DropDownListFor(x => Model.SelectedResaurant, new SelectList(Model.Restaurants, "Value", "Text"), htmlAttributes: new { @class = "form-control", @id = "Restaurant" })
+                @Html.ValidationMessageFor(x => x.SelectedResaurant, "", new { @class = "text-danger" })
+            </div>
+            <div class="form-group">
+                <label asp-for="DinerDate" class="control-label"></label>
+                <input asp-for="DinerDate" class="form-control" />
+                <span asp-validation-for="DinerDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="NbrGuests" class="control-label"></label>
+                <input asp-for="NbrGuests" class="form-control" />
+                <span asp-validation-for="NbrGuests" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
