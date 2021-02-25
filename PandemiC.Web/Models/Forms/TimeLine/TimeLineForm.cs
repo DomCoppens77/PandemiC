@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -9,6 +10,8 @@ namespace PandemiC.Web.Models.Forms.TimeLine
 {
     public class TimeLineForm
     {
+        public int Id { get; set; }
+
         [DisplayName("Restaurant")]
         [Required]
         public string RestaurantName { get; set; }

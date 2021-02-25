@@ -12,9 +12,9 @@ namespace PandemiC.Forms
         public string Email { get; set; }
 
         [Required]
-        [StringLength(50, MinimumLength = 6)]
-        [DataType(DataType.Password)]
-        [RegExPasswd]
+        //[StringLength(50, MinimumLength = 6)]
+        //[DataType(DataType.Password)]
+        //[RegExPasswd]
         public string Passwd { get; set; }
     }
 }

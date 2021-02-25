@@ -10,13 +10,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\DCOToolBox.Cryptography\DCOToolBox.Cryptography.csproj" />
     <ProjectReference Include="..\PandemiC.Web.Client\PandemiC.Web.Client.csproj" />
     <ProjectReference Include="..\PandemiC.Web.Global\PandemiC.Web.Global.csproj" />
     <ProjectReference Include="..\PandemiC.Web.Repo\PandemiC.Web.Repo.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Models\Forms\Country\" />
   </ItemGroup>
 
 </Project>

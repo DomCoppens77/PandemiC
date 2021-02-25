@@ -26,7 +26,9 @@ namespace PandemiC.Web.Controllers
         }
         public IActionResult Index()
         {
-            if (_sessionManager.User is not null) return View(_timeLineService.Get(_sessionManager.User.Id));
+            IEnumerable<TimeLineForm> timeLineForm = _timeLineService.Get(_sessionManager.User.Id).Select(tl => new TimeLineForm() { Id = tl.Id, DinerDate = tl.DinerDate, NbrGuests = tl.NbrGuests, RestaurantName = tl.RestaurantName  });
+
+            if (_sessionManager.User is not null) return View(timeLineForm);
             else return RedirectToAction("Login", "Auth");
         }
 
@@ -156,5 +158,7 @@ namespace PandemiC.Web.Controllers
             restaurants.Insert(0, new SelectListItem("--- select Restaurant ---" ,null));
             return restaurants;
         }
+
+
     }
 }

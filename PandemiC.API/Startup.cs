@@ -1,5 +1,5 @@
 using DCODatabase.ToolBox.Database;
-using DCODatabase.ToolBox.Database;
+using DCOToolBox.Cryptography;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -76,6 +76,30 @@ namespace PandemiC.API
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 c.IncludeXmlComments(xmlPath);
 
+
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
+                {
+                    Name = "Authorization",
+                    Type = SecuritySchemeType.ApiKey,
+                    Scheme = "Bearer",
+                    BearerFormat = "JWT",
+                    In = ParameterLocation.Header,
+                    Description = "Enter 'Bearer' [space] and then your valid token in the text input below.\r\n\r\nExample: \"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9\"",
+                });
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "Bearer"
+                            }
+                        },
+                        new string[] {}
+                    }
+                });
             });
 
             services.AddSingleton<DbProviderFactory, SqlClientFactory>((sp) => SqlClientFactory.Instance);
@@ -95,6 +119,8 @@ namespace PandemiC.API
             services.AddScoped<ITimeLineService<TimeLine>, TimeLineService>();
 
             services.AddSingleton<ITokenService, TokenService>();
+
+            services.AddSingleton<ICryptoRSA, CryptoRSA>(o => new CryptoRSA(Properties.Resource.Keys));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

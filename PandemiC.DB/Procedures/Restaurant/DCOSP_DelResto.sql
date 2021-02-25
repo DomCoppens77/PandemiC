@@ -2,5 +2,6 @@
 	@Id INT
 AS
 BEGIN
-	DELETE FROM [dbo].[Restaurant] Where [Id] = @Id;
+	if ([dbo].[SF_TLRestoCount](@Id)) = 0
+	  DELETE FROM [dbo].[Restaurant] Where [Id] = @Id;
 END

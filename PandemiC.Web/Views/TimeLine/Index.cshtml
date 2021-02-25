@@ -1,20 +1,19 @@
-﻿@model IEnumerable<PandemiC.Web.Client.Models.TimeLine>
+﻿@model IEnumerable<PandemiC.Web.Models.Forms.TimeLine.TimeLineForm>
 
 @{
     ViewData["Title"] = "Index";
 }
 
+@Html.Partial("_DCO_Error")
+
 <p>
-    <a asp-action="Create">Create New Time Line Point</a>
+    <a asp-action="Create">Create New Time Line</a>
 </p>
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.UserId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.RestaurantId)
+                @Html.DisplayNameFor(model => model.RestaurantName)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.DinerDate)
@@ -26,26 +25,24 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.UserId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.RestaurantId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DinerDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.NbrGuests)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                @*@Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |*@
-                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RestaurantName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DinerDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NbrGuests)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                    @*@Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |*@
+                    @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

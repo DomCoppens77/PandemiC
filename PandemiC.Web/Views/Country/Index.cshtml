@@ -1,8 +1,10 @@
-﻿@model IEnumerable<PandemiC.Web.Client.Models.Country>
+﻿@model IEnumerable<PandemiC.Web.Models.Forms.Country.CountryForm>
 
 @{
     ViewData["Title"] = "Index";
 }
+
+@Html.Partial("_DCO_Error")
 
 <p>
     <a asp-action="Create">Create New Country</a>
@@ -23,22 +25,24 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.ISO)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Ctry)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsEU)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { ISO = item.ISO }) |
-                @Html.ActionLink("Delete", "Delete", new { ISO = item.ISO })
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ISO)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Ctry)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IsEU)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { ISO = item.ISO }) |
+                    @*@Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |*@
+                    @Html.ActionLink("Delete", "Delete", new { ISO = item.ISO })
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

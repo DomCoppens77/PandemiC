@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PandemiC.API.Helper;
+using PandemiC.API.Infrastructure.Security;
 using PandemiC.API.Models.API;
 using PandemiC.Client.Models;
 using PandemiC.Forms;
@@ -12,7 +13,7 @@ namespace PandemiC.API.Controllers
 {
     [Route("api/[controller]/[Action]")]
     [ApiController]
-
+    [AuthRequired]
     public class TimeLineController : Controller
     {
 

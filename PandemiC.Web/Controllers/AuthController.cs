@@ -1,5 +1,4 @@
-﻿using DCODatabase.ToolBox.Security;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
 using PandemiC.Web.Repo;
@@ -7,21 +6,24 @@ using PandemiC.Web.Client.Models;
 using PandemiC.Web.Infrastructure;
 using PandemiC.Web.Models.Forms;
 using System;
+using DCOToolBox.Cryptography;
+using PandemiC.Web.Attribute;
 
 namespace PandemiC.Web.Controllers
 {
     public class AuthController : Controller
     {
-
         private readonly IUserService<User> _iUserService;
         private readonly ISessionManager _sessionManager;
         private readonly ILogger _logger;
+        private readonly ICryptoRSA _cryptoRSA;
 
-        public AuthController(IUserService<User> userService, ISessionManager sessionManager, ILogger<AuthController> logger)
+        public AuthController(IUserService<User> userService, ISessionManager sessionManager, ILogger<AuthController> logger, ICryptoRSA cryptoRSA)
         {
             _iUserService = userService;
             _sessionManager = sessionManager;
             _logger = logger;
+            _cryptoRSA = cryptoRSA;
         }
 
         public IActionResult Index()
@@ -32,11 +34,13 @@ namespace PandemiC.Web.Controllers
         [HttpGet]
         public IActionResult Login()
         {
-            return View();
+            LoginForm l = new LoginForm { Email = "zecoop@gmail.com" };
+            return View(l);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [GetPublicKey]
         public IActionResult Login(LoginForm form)
         {
             try
@@ -44,8 +48,8 @@ namespace PandemiC.Web.Controllers
                 if (ModelState.IsValid)
                 {
                     // check if email or natreg as login
-
-                    User u = _iUserService.Login(form.Email, Base64.Base64Encode(form.Passwd));
+                    User u = _iUserService.Login(form.Email, Convert.ToBase64String(_cryptoRSA.Crypter(form.Passwd)));
+                    // User u = _iUserService.Login(form.Email, Base64.Base64Encode(form.Passwd));
 
                     //else 
                     //    User u = _iUserService.Login2("", Base64.Base64Encode(form.Passwd));
@@ -77,6 +81,7 @@ namespace PandemiC.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [GetPublicKey]
         public IActionResult Register(UserAddForm form)
         {
             // auth ASP
@@ -84,7 +89,9 @@ namespace PandemiC.Web.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    User u = new User() { Email = form.Email, FirstName = form.FirstName, LastName = form.LastName, NatRegNbr = form.NatRegNbr, Passwd = Base64.Base64Encode(form.Passwd) };
+                    // User u = new User() { Email = form.Email, FirstName = form.FirstName, LastName = form.LastName, NatRegNbr = form.NatRegNbr, Passwd = Base64.Base64Encode(form.Passwd) };
+                    User u = new User() { Email = form.Email, FirstName = form.FirstName, LastName = form.LastName, NatRegNbr = form.NatRegNbr, Passwd = Convert.ToBase64String(_cryptoRSA.Crypter(form.Passwd)) };
+                    
                     u = _iUserService.Add(u);
                     return RedirectToAction("Login");
                 }
@@ -124,7 +131,14 @@ namespace PandemiC.Web.Controllers
                         bool updated = _iUserService.Upd(u);
                         if (!updated)
                         {
-                            ViewBag.Message = "Error: User NOT Updated (" + id.ToString() + ")";
+                            TempData["Message"] = "Error: User NOT Updated (" + id.ToString() + ")";
+                        }
+                        else 
+                        {
+                            SessionUser UpdatedUser = _sessionManager.User;
+                            UpdatedUser.LastName = form.LastName;
+                            UpdatedUser.FirstName = form.FirstName;
+                            _sessionManager.User = UpdatedUser;
                         }
                         return RedirectToAction("Index", "TimeLine");
                     }

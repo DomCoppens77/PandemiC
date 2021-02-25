@@ -1,4 +1,5 @@
 ﻿using DCODatabase.ToolBox.Security;
+using DCOToolBox.Cryptography;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NSwag.Annotations;
@@ -21,10 +22,13 @@ namespace PandemiC.API.Controllers
         private readonly IUserService<User> _clientService;
         private readonly ITokenService _tokenService;
 
-        public UserController(IUserService<User> clientService, ITokenService tokenService)
+        private ICryptoRSA _cryptoService;
+
+        public UserController(IUserService<User> clientService, ITokenService tokenService, ICryptoRSA cryptoService)
         {
             _clientService = clientService;
             _tokenService = tokenService;
+            _cryptoService = cryptoService;
         }
         /// <summary>
         /// Get a List of All Users registred in the Database
@@ -91,7 +95,15 @@ namespace PandemiC.API.Controllers
             try
             {
                 if (u is null) throw new ArgumentNullException("User Object Empty (ADD)");
-                User uo = new User() {Email = u.Email, NatRegNbr = u.NatRegNbr, FirstName = u.FirstName, LastName = u.LastName, Passwd = Base64.Base64Decode(u.Passwd)};
+                
+                string testpasswd = _cryptoService.Decrypter(Convert.FromBase64String(u.Passwd));
+                // User uo = new User() {Email = u.Email, NatRegNbr = u.NatRegNbr, FirstName = u.FirstName, LastName = u.LastName, Passwd = (Base64.Base64Decode(u.Passwd)};
+                User uo = new User() { Email = u.Email, NatRegNbr = u.NatRegNbr, FirstName = u.FirstName, LastName = u.LastName, Passwd = _cryptoService.Decrypter(Convert.FromBase64String(u.Passwd))};
+                
+
+
+
+
                 uo = _clientService.Add(uo);
                 return ApiControllerHelper.SendOk(this, new ApiResult<User>(HttpStatusCode.OK, null, uo), true);
             }
@@ -211,7 +223,9 @@ namespace PandemiC.API.Controllers
         {
             try
             {
-                User u = _clientService.Login(l.Email, Base64.Base64Decode(l.Passwd));
+                string testpasswd = _cryptoService.Decrypter(Convert.FromBase64String(l.Passwd));
+                // User u = _clientService.Login(l.Email, Base64.Base64Decode(l.Passwd));
+                User u = _clientService.Login(l.Email, _cryptoService.Decrypter(Convert.FromBase64String(l.Passwd)));
                 if (u is not null)
                 {
                     u.Token = _tokenService.GenerateToken(u);
@@ -245,6 +259,7 @@ namespace PandemiC.API.Controllers
         {
             try
             {
+                string testpasswd = _cryptoService.Decrypter(Convert.FromBase64String(l.Passwd));
                 User u = _clientService.LoginNRN(l.NatRegNbr, Base64.Base64Decode(l.Passwd));
                 if (u is not null)
                 {

@@ -18,6 +18,10 @@ using GTL = PandemiC.Web.Global.Models.TimeLine;
 using GTLService = PandemiC.Web.Global.Services.TimeLineService;
 using GUser = PandemiC.Web.Global.Models.User;
 using GUserService = PandemiC.Web.Global.Services.UserService;
+using GKeyInfo = PandemiC.Web.Global.Models.KeyInfo;
+using GSecurityService = PandemiC.Web.Global.Services.SecurityService;
+using DCOToolBox.Cryptography;
+using System.Security.Authentication;
 
 namespace PandemiC.Web
 {
@@ -48,13 +52,25 @@ namespace PandemiC.Web
 
             services.AddTransient(sp =>
             {
-                HttpClient client = new HttpClient() { BaseAddress = new Uri("http://localhost:51380") };
-                client.DefaultRequestHeaders.Accept.Clear();
+                HttpClientHandler handler = new HttpClientHandler()
+                {
+                    //obligatoire si on lance l'api en selfhost (console) .Default
+                    SslProtocols = SslProtocols.Tls12
+                };
+
+                handler.ServerCertificateCustomValidationCallback = (request, cert, chain, errors) => true;
+                HttpClient client = new HttpClient(handler);
+                client.BaseAddress = new Uri("http://localhost:51380");
+
+                // HttpClient client = new HttpClient() { BaseAddress = new Uri("http://localhost:51380") };
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
                 ISessionManager sessionManager = sp.GetService<ISessionManager>();
                 if (sessionManager.User is not null)
+                    //bientôt expirer ?
+                    // si oui Renew - save new token
+
                     client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", sessionManager.User.Token);
 
                 return client;
@@ -70,6 +86,13 @@ namespace PandemiC.Web
 
             services.AddTransient<IRestaurantService<GResto>, GRestoService>();
             services.AddTransient<IRestaurantService<Restaurant>, RestaurantService>();
+
+            services.AddScoped<ICryptoRSA, CryptoRSA>();
+            services.AddSingleton<Uri>(p => new Uri("http://localhost:51380/"));
+
+            services.AddSingleton<ISecurityService<GKeyInfo>, GSecurityService>();
+            services.AddSingleton<ISecurityService<KeyInfo>, SecurityService>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

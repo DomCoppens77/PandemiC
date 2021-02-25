@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using PandemiC.Web.Client.Models;
 using PandemiC.Web.Infrastructure;
+using PandemiC.Web.Models.Forms.Country;
 using PandemiC.Web.Repo;
 using System;
 using System.Collections.Generic;
@@ -22,7 +23,11 @@ namespace PandemiC.Web.Controllers
         }
         public IActionResult Index()
         {
-            if (_sessionManager.User is not null) return View(_countryService.Get());
+            if (_sessionManager.User is not null)
+            {
+               IEnumerable<CountryForm> countryForm = _countryService.Get().Select(c => new CountryForm { Ctry = c.Ctry, IsEU = c.IsEU, ISO = c.ISO });
+               return View(countryForm);
+            }
             else return RedirectToAction("Login", "Auth");
         }
 
@@ -38,7 +43,7 @@ namespace PandemiC.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(Country form)
+        public IActionResult Create(CountryForm form)
         {
             if (_sessionManager.User is not null)
             {
@@ -46,7 +51,8 @@ namespace PandemiC.Web.Controllers
                 {
                     if (ModelState.IsValid)
                     {
-                        _countryService.Add(form);
+                        Country c = new Country { Ctry = form.Ctry, ISO = form.ISO, IsEU = form.IsEU };
+                        _countryService.Add(c);
                         return RedirectToAction("index");
                     }
                 }
@@ -101,25 +107,34 @@ namespace PandemiC.Web.Controllers
         {
             if (_sessionManager.User is not null)
             {
-                return View(_countryService.Get(ISO));
-            }
-            else return RedirectToAction("Login", "Auth");
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(string ISO, IFormCollection collection)
-        {
-            if (_sessionManager.User is not null)
-            {
                 bool deleted = _countryService.Del(ISO);
                 if (!deleted)
                 {
-                    ViewBag.Message = "Error: Restaurant NOT Deleted (" + ISO + ")";
+                    // Tempdata is persistant and viewbag is the for the actual view
+                    TempData["Message"] = "Error: Country NOT Deleted (" + ISO + ")";
                 }
-                return RedirectToAction("Index", "Restaurant");
+                return RedirectToAction("index", "Country");
             }
             else return RedirectToAction("Login", "Auth");
+
         }
+
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult Delete(string ISO, Country collection)
+        //{
+        //    if (_sessionManager.User is not null)
+        //    {
+        //        bool deleted = _countryService.Del(ISO);
+        //        if (!deleted)
+        //        {
+        //            ViewBag.Message = "Error: Country NOT Deleted (" + ISO + ")";
+        //            ModelState.AddModelError("", "Error: Country NOT Deleted (" + ISO + ")");
+        //            return View(collection);
+        //        }
+        //        return RedirectToAction("index", "Country");
+        //    }
+        //    else return RedirectToAction("Login", "Auth");
+        //}
     }
 }

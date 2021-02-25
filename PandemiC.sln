@@ -27,9 +27,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PandemiC.Web.Global", "Pand
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PandemiC.Client", "PandemiC.Client\PandemiC.Client.csproj", "{2FD31378-4E90-4E09-8E10-3D4571A8C286}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PandemiC.Forms", "PandemiC.Forms\PandemiC.Forms.csproj", "{E74491AB-12C7-48DA-A43C-22ABF81E2E12}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PandemiC.Forms", "PandemiC.Forms\PandemiC.Forms.csproj", "{E74491AB-12C7-48DA-A43C-22ABF81E2E12}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PandemiC.Web.Repo", "PandemiC.Web.Repo\PandemiC.Web.Repo.csproj", "{69085D10-B685-43E8-B64D-615C994072D4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PandemiC.Web.Repo", "PandemiC.Web.Repo\PandemiC.Web.Repo.csproj", "{69085D10-B685-43E8-B64D-615C994072D4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DCOToolBox.Cryptography", "DCOToolBox.Cryptography\DCOToolBox.Cryptography.csproj", "{63CF19CC-7A68-46AC-A060-0F6BF8CB2A3C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -79,6 +81,10 @@ Global
 		{69085D10-B685-43E8-B64D-615C994072D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{69085D10-B685-43E8-B64D-615C994072D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{69085D10-B685-43E8-B64D-615C994072D4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{63CF19CC-7A68-46AC-A060-0F6BF8CB2A3C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{63CF19CC-7A68-46AC-A060-0F6BF8CB2A3C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{63CF19CC-7A68-46AC-A060-0F6BF8CB2A3C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{63CF19CC-7A68-46AC-A060-0F6BF8CB2A3C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -95,6 +101,7 @@ Global
 		{2FD31378-4E90-4E09-8E10-3D4571A8C286} = {EE7D2B46-A6C4-4E0B-8B15-5CA67E0C1E00}
 		{E74491AB-12C7-48DA-A43C-22ABF81E2E12} = {EE7D2B46-A6C4-4E0B-8B15-5CA67E0C1E00}
 		{69085D10-B685-43E8-B64D-615C994072D4} = {D1EE8506-E1AC-47A7-B809-7059E99A8277}
+		{63CF19CC-7A68-46AC-A060-0F6BF8CB2A3C} = {4F7DDDED-D9E9-4F10-A311-32A490C1D69B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9E438697-0DD4-458E-A089-1F8A78EFECA8}

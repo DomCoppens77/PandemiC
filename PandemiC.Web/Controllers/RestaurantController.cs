@@ -129,7 +129,6 @@ namespace PandemiC.Web.Controllers
                             Country = form.SelectedCountry,
                             Email = form.Email,
                             Closed = form.Closed
-
                         };
 
                         bool updated = _restaurantService.Upd(resto);
@@ -150,7 +149,6 @@ namespace PandemiC.Web.Controllers
             else return RedirectToAction("Login", "Auth");
         }
 
-
         public ActionResult Delete(int id)
         {
             Restaurant resto = _restaurantService.Get(id);
@@ -167,7 +165,7 @@ namespace PandemiC.Web.Controllers
                 bool deleted = _restaurantService.Del(id);
                 if (!deleted)
                 {
-                    ViewBag.Message = "Error: Restaurant NOT Deleted (" + id.ToString() + ")";
+                    TempData["Message"] = "Error: Restaurant NOT Deleted (" + id.ToString() + ")";
                 }
                 return RedirectToAction("Index", "Restaurant");
             }
